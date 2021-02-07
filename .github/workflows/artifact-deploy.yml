@@ -1,7 +1,7 @@
 
 name: Publish nuget
 
-# Start workflow when commit or completed pull request in branch main 
+# Configuration to start workflow when commit or completed pull request in branch main 
 on:
   push:
     branches:
@@ -11,36 +11,44 @@ on:
     branches:
       - main
 
+# Configuration all taks for make my deploy
 jobs:
   build:
     runs-on: ubuntu-18.04
     name: Update NuGet package
     steps:
-      
+        ## Use feature for generate new build number in new deploy
       - name: Generate build number
         uses: einaregilsson/build-number@v2 
+        ## Set allow unsecure command for use set-env in feature | future tasks - find new feature where not use set-env 
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         with:
           token: ${{secrets.github_token}}        
+      
+      ## Show my new build number for use suffix in package version
       - name: Print new build number
         run: echo "Build number is $BUILD_NUMBER"
   
+      ## Checkout in my branch with code for generate packages
       - name: Checkout repository
         uses: actions/checkout@main
-                
+      
+      ## Install .net core for use commands to build and pack solution
       - name: Setup .NET Core @ Latest
         uses: actions/setup-dotnet@v1
         with:
           source-url: https://nuget.pkg.github.com/pauloderney/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}} 
-          
+      
+      ## Build solution and apply version suffix refs build number   
       - name: Build solution and generate NuGet package
         run: |  
           cd src
           dotnet pack -c Release -o out --version-suffix $BUILD_NUMBER
-     
+    
+      ## Push all packages .nupkg generated in previous task for my personal nuget account
       - name: Nuget push to my source nuget
         run: |
           dotnet nuget push **/*.nupkg --source https://nuget.pkg.github.com/pauloderney/index.json
