@@ -32,6 +32,16 @@ jobs:
           cd src/Financial.Framework.Api
           dotnet pack -c Release -o out  
                  
-      - name: Push generated package to GitHub registry
-        run: dotnet nuget push ./src/Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true --repository https://github.com/PauloDerney/nuget-project
+##      - name: Push generated package to GitHub registry
+##        run: dotnet nuget push ./src/Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true --repository https://github.com/PauloDerney/Financial.Framework
+      - name: Nuget push
+        run: |
+          dotnet nuget add source https://nuget.pkg.github.com/pauloderney/index.json --name financial --username pauloderney --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
+          dotnet nuget push **/*.nupkg --source financial
+
+
+
+
+
+
 
