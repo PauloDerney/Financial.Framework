@@ -16,17 +16,21 @@ jobs:
     runs-on: ubuntu-18.04
     name: Update NuGet package
     steps:
-      
-      - name: Delete Package Versions
-        uses: actions/delete-package-versions@v1.0.3
-        with:
-          package-name: Financial.Framework.Api
-          num-old-versions-to-delete: 1
-          token: ${{secrets.NUGET_TOKEN}} 
   
       - name: Checkout repository
         uses: actions/checkout@main
         
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9
+        with:
+          versionSpec: '5.1.x'
+      - name: Use GitVersion
+        id: gitversion # step id used as reference for output values
+        uses: gittools/actions/gitversion/execute@v0.9
+      - run: |
+          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
+          echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.CommitsSinceVersionSourcePadded }}"
+                
       - name: Setup .NET Core @ Latest
         uses: actions/setup-dotnet@v1
         with:
@@ -37,7 +41,7 @@ jobs:
       - name: Build solution and generate NuGet package
         run: |  
           cd src/Financial.Framework.Api
-          dotnet pack -c Release -o out  
+          dotnet pack -c Release -o out -p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}-${{ steps.gitversion.outputs.CommitsSinceVersionSourcePadded }}
     
       - name: Nuget push to my source nuget
         run: |
