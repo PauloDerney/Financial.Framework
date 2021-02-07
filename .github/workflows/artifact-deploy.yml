@@ -38,7 +38,7 @@ jobs:
           
       - name: Build solution and generate NuGet package
         run: |  
-          cd src/Financial.Framework.Api
+          cd src
           dotnet pack -c Release -o out --version-suffix $BUILD_NUMBER
      
       - name: Nuget push to my source nuget
