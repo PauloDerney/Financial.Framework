@@ -18,7 +18,7 @@ jobs:
     steps:
 
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@main
 
       - name: Setup .NET Core @ Latest
         uses: actions/setup-dotnet@v1
@@ -29,8 +29,8 @@ jobs:
           
       - name: Build solution and generate NuGet package
         run: |  
-          cd Financial.Framework.Api
+          cd src/Financial.Framework.Api
           dotnet pack -c Release -o out  
 
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push ./Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true
+        run: dotnet nuget push ./src/Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true
