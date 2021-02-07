@@ -39,7 +39,7 @@ jobs:
       - name: Build solution and generate NuGet package
         run: |  
           cd src/Financial.Framework.Api
-          dotnet pack -c Release -o out -p:PackageVersion=${{ "1.0." +  steps.buildnumber.outputs.build_number }}
+          dotnet pack -c Release -o out --version-suffix 1.0.${{ steps.buildnumber.outputs.build_number }}
      
       - name: Nuget push to my source nuget
         run: |
