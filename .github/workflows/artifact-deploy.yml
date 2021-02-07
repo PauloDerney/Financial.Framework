@@ -36,7 +36,7 @@ jobs:
 ##        run: dotnet nuget push ./src/Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true --repository https://github.com/PauloDerney/Financial.Framework
       - name: Nuget push
         run: |
-          dotnet nuget push **/*.nupkg --source source https://nuget.pkg.github.com/pauloderney/index.json --username pauloderney --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text --skip-duplicate
+          dotnet nuget push **/*.nupkg 
      #     dotnet nuget add source https://nuget.pkg.github.com/pauloderney/index.json --name github --username pauloderney --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
           
 
