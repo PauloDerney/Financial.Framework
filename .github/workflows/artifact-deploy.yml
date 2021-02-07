@@ -1,4 +1,11 @@
 
+name: Delete Package Versions
+uses: actions/delete-package-versions@v1.0.3
+with:
+  package-name: Financial.Framework.Api
+  num-old-versions-to-delete: 0
+  token: ${{secrets.NUGET_TOKEN}} 
+---
 name: Publish nuget
 
 # Start workflow when commit or completed pull request in branch main 
@@ -35,8 +42,6 @@ jobs:
       - name: Nuget push to my source nuget
         run: |
           dotnet nuget push **/*.nupkg --source https://nuget.pkg.github.com/pauloderney/index.json
-          
-
 
 
 
