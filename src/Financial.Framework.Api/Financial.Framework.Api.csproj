@@ -5,6 +5,8 @@
     <RepositoryUrl>https://github.com/PauloDerney/Financial.Framework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <NeutralLanguage></NeutralLanguage>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MediatR" Version="8.0.1" />
