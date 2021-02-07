@@ -21,7 +21,7 @@ jobs:
         uses: actions/delete-package-versions@v1.0.3
         with:
           package-name: Financial.Framework.Api
-          num-old-versions-to-delete: 5
+          num-old-versions-to-delete: 1
           token: ${{secrets.NUGET_TOKEN}} 
   
       - name: Checkout repository
