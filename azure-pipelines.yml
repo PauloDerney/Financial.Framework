@@ -1,0 +1,109 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project infra service'
+  inputs:
+    command: 'build'
+    configuration: 'Release'
+    projects: 'src/Financial.Framework.Infra.Service/Financial.Framework.Infra.Service.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Pack the package infra service'
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/Financial.Framework.Infra.Service/Financial.Framework.Infra.Service.csproj'
+    nobuild: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project Api'
+  inputs:
+    command: 'build'
+    configuration: 'Release'
+    projects: 'src/Financial.Framework.Api/Financial.Framework.Api.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Pack the package Api'
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/Financial.Framework.Api/Financial.Framework.Api.csproj'
+    nobuild: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project integration'
+  inputs:
+    command: 'build'
+    configuration: 'Release'
+    projects: 'src/Financial.Framework.Integration/Financial.Framework.Integration.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Pack the package integration'
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/Financial.Framework.Integration/Financial.Framework.Integration.csproj'
+    nobuild: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project infra data'
+  inputs:
+    command: 'build'
+    configuration: 'Release'
+    projects: 'src/Financial.Framework.Infra.Data/Financial.Framework.Infra.Data.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Pack the package infra data'
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/Financial.Framework.Infra.Data/Financial.Framework.Infra.Data.csproj'
+    nobuild: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project domain'
+  inputs:
+    command: 'build'
+    configuration: 'Release'
+    projects: 'src/Financial.Framework.Domain/Financial.Framework.Domain.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Pack the package domain'
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/Financial.Framework.Domain/Financial.Framework.Domain.csproj'
+    nobuild: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish the package'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+  
