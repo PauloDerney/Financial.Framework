@@ -33,5 +33,5 @@ jobs:
           dotnet pack -c Release -o out  
                  
       - name: Push generated package to GitHub registry
-        run: nuget push ./src/Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true
+        run: dotnet nuget push ./src/Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true
 
