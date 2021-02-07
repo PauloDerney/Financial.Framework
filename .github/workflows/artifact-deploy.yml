@@ -19,6 +19,8 @@ jobs:
       
       - name: Generate build number
         uses: einaregilsson/build-number@v2 
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         with:
           token: ${{secrets.github_token}}        
       - name: Print new build number
