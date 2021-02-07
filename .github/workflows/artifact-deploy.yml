@@ -37,7 +37,7 @@ jobs:
       - name: Nuget push
         run: |
           dotnet nuget add source https://nuget.pkg.github.com/pauloderney/index.json --name financial --username pauloderney --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
-          dotnet nuget push **/*.nupkg --source financial
+          dotnet nuget push **/*.nupkg --source financial --skip-duplicate
 
 
 
