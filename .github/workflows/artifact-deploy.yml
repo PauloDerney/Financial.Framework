@@ -23,14 +23,18 @@ jobs:
       - name: Setup .NET Core @ Latest
         uses: actions/setup-dotnet@v1
         with:
-          source-url: https://nuget.pkg.github.com/pauloderney/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}        
+          dotnet-version: '3.1.0'    
           
       - name: Build solution and generate NuGet package
         run: |  
           cd src/Financial.Framework.Api
           dotnet pack -c Release -o out  
-
+          
+      - name: Install NuGet client
+        uses: warrenbuckley/Setup-Nuget@v1
+        
+      - name: Add private GitHub registry to NuGet
+        run: nuget sources add -name "GPR" -Source https://nuget.pkg.github.com/pauloderney/index.json -Username pauloderney -Password ${{ secrets.GITHUB_TOKEN }}
+                 
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push ./src/Financial.Framework.Api/out/*.nupkg --skip-duplicate --no-symbols true
+        run: nuget push ./src/Financial.Framework.Api/out/*.nupkg -Source "GPR" -SkipDuplicate
