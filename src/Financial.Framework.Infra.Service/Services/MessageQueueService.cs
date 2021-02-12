@@ -38,8 +38,11 @@ namespace Financial.Framework.Infra.Service.Services
 
                     var batch = channel.CreateBasicPublishBatch();
 
-                    foreach (var item in items)
-                        batch.Add(_settings.Exchange, routingKey, false, null, Encoding.UTF8.GetBytes(JsonSerializer.Serialize(item)));
+                    Parallel.ForEach(items, (item) =>
+                    {
+                        batch.Add(_settings.Exchange, routingKey, false,null,
+                            Encoding.UTF8.GetBytes(JsonSerializer.Serialize(item)));
+                    });
 
                     if (!cancellationToken.IsCancellationRequested)
                         batch.Publish();
@@ -62,7 +65,7 @@ namespace Financial.Framework.Infra.Service.Services
                 UserName = _settings.UserName,
                 Password = _settings.Password,
                 Port = _settings.Port,
-                RequestedConnectionTimeout = _settings.Timeout
+                RequestedConnectionTimeout = TimeSpan.FromSeconds(_settings.Timeout)
             };
         }
     }

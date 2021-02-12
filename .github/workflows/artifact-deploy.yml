@@ -52,9 +52,3 @@ jobs:
       - name: Nuget push to my source nuget
         run: |
           dotnet nuget push **/*.nupkg --source https://nuget.pkg.github.com/pauloderney/index.json
-
-
-
-
-
-
