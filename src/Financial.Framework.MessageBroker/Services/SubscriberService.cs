@@ -35,7 +35,7 @@ namespace Financial.Framework.MessageBroker.Services
 
             _channel.BasicConsume(queue, false, consumer);
 
-            Console.WriteLine("Consumer started");
+            Console.WriteLine($"{queue} binding in {routingKey} - started");
             Console.ReadLine();
         }
 
