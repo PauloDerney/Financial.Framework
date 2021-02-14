@@ -1,6 +1,5 @@
 ﻿using Financial.Framework.Domain.Interfaces;
 using Financial.Framework.MessageBroker.AppModels;
-using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace Financial.Framework.MessageBroker.Services
 {
     public class PublisherService : BaseService, IPublisherService
     {
-        public PublisherService(IOptions<QueueSettings> settings) : base(settings) { }
+        public PublisherService(QueueSettings settings) : base(settings) { }
 
         public async Task PublishAsync<TValue>(TValue item, string routingKey, CancellationToken cancellationToken = default) where TValue : class
         {

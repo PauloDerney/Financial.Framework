@@ -2,7 +2,6 @@
 using Financial.Framework.Domain.Interfaces;
 using Financial.Framework.MessageBroker.AppModels;
 using MediatR;
-using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -16,7 +15,7 @@ namespace Financial.Framework.MessageBroker.Services
         private readonly IMediator _mediator;
         private IModel _channel;
 
-        public SubscriberService(IOptions<QueueSettings> settings, IMediator mediator) : base(settings)
+        public SubscriberService(QueueSettings settings, IMediator mediator) : base(settings)
         {
             _mediator = mediator;
         }
@@ -27,7 +26,7 @@ namespace Financial.Framework.MessageBroker.Services
             _channel = connection.CreateModel();
 
             _channel.ExchangeDeclare(QueueSettings.Exchange, ExchangeType.Topic, true);
-            _channel.QueueDeclare(queue, true, true, false);
+            _channel.QueueDeclare(queue, true, false, false);
             _channel.QueueBind(queue, QueueSettings.Exchange, routingKey);
             var consumer = new EventingBasicConsumer(_channel);
 
@@ -55,6 +54,7 @@ namespace Financial.Framework.MessageBroker.Services
             }
             catch (Exception ex)
             {
+                _channel.BasicNack(e.DeliveryTag, true, true);
                 Console.WriteLine($"[Subscriber.ReceivedMessage] Error in message {ex.Message}.");
             }
         }

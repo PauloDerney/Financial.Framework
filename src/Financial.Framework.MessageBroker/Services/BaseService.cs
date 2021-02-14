@@ -1,5 +1,4 @@
 ﻿using Financial.Framework.MessageBroker.AppModels;
-using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 
@@ -9,9 +8,9 @@ namespace Financial.Framework.MessageBroker.Services
     {
         protected readonly QueueSettings QueueSettings;
 
-        protected BaseService(IOptions<QueueSettings> settings)
+        protected BaseService(QueueSettings settings)
         {
-            QueueSettings = settings.Value;
+            QueueSettings = settings;
         }
 
         protected ConnectionFactory GetConnectionFactory()

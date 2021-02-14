@@ -11,12 +11,13 @@ namespace Financial.Framework.MessageBroker.DependencyInjection
     {
         public static void InjectSubscriber(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<QueueSettings>(configuration.GetSection("QueueSettings"));
-            services.AddTransient<ISubscriberService, SubscriberService>();
+            services.AddSingleton(provider => configuration.GetSection("QueueSettings").Get<QueueSettings>());
+            services.AddSingleton<ISubscriberService, SubscriberService>();
         }
 
         public static void InjectProducer(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton(provider => configuration.GetSection("QueueSettings").Get<QueueSettings>());
             services.AddScoped<IPublisherService, PublisherService>();
         }
 
