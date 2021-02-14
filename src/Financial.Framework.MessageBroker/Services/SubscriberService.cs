@@ -1,4 +1,5 @@
-﻿using Financial.Framework.MessageBroker.AppModels;
+﻿using Financial.Framework.Domain.Interfaces;
+using Financial.Framework.MessageBroker.AppModels;
 using MediatR;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -9,7 +10,7 @@ using System.Text.Json;
 
 namespace Financial.Framework.MessageBroker.Services
 {
-    public class SubscriberService : BaseService
+    public class SubscriberService : BaseService, ISubscriberService
     {
         private readonly IMediator _mediator;
         private IModel _channel;

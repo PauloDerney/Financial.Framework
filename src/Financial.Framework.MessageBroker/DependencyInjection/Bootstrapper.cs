@@ -19,12 +19,6 @@ namespace Financial.Framework.MessageBroker.DependencyInjection
             services.AddScoped<IPublisherService, PublisherService>();
         }
 
-        public static IHostBuilder CreateBuilder()
-        {
-            return Host.CreateDefaultBuilder()
-                       .AddAppSettings();
-        }
-
         public static IHostBuilder AddAppSettings(this IHostBuilder host)
         {
             host
