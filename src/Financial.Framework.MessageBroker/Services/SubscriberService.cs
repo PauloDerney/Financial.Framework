@@ -7,6 +7,7 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Financial.Framework.MessageBroker.Services
 {
@@ -42,11 +43,11 @@ namespace Financial.Framework.MessageBroker.Services
         {
             try
             {
+                var type = typeof(TCommand);
                 var body = e.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                var command = JsonSerializer.Deserialize<TCommand>(message);
+                var command = JsonSerializer.Deserialize(body, type);
 
-                Console.WriteLine($"[Subscriber.ReceivedMessage] received message: {message}");
+                Console.WriteLine($"[Subscriber.ReceivedMessage] received message: {Encoding.UTF8.GetString(body)}");
 
                 PublishCommand(command);
 
