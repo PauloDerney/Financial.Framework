@@ -60,7 +60,7 @@ namespace Financial.Framework.MessageBroker.Services
 
         private void PublishCommand<TCommand>(TCommand command)
         {
-            _mediator.Publish(command);
+            _mediator.Send(command);
         }
     }
 }
