@@ -7,6 +7,7 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Financial.Framework.MessageBroker.Services
 {
@@ -48,7 +49,7 @@ namespace Financial.Framework.MessageBroker.Services
 
                 Console.WriteLine($"[Subscriber.ReceivedMessage] received message: {message}");
 
-                PublishCommand(command);
+                PublishCommand(command).GetAwaiter();
 
                 _channel.BasicAck(e.DeliveryTag, true);
             }
@@ -58,9 +59,9 @@ namespace Financial.Framework.MessageBroker.Services
             }
         }
 
-        private void PublishCommand<TCommand>(TCommand command)
+        private async Task PublishCommand<TCommand>(TCommand command)
         {
-            _mediator.Send(command);
+            await _mediator.Send(command);
         }
     }
 }
