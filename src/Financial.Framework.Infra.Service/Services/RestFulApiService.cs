@@ -9,6 +9,7 @@ namespace Financial.Framework.Infra.Service.Services
 {
     public class RestFulApiService : IRestFulApiService
     {
+        [Obsolete("Method depreciated, in next version deleted")]
         public async Task<TResponse> ConsumeApiRestAsync<TResponse>(HttpMethod method, string url) where TResponse : ResponseBase, new()
         {
             try

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financial.Framework.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financial.Framework.Api", "Financial.Framework.Api\Financial.Framework.Api.csproj", "{899285F6-6825-4C98-81A1-5CE517266ADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financial.Framework.Subscriber", "Financial.Framework.Subscriber\Financial.Framework.Subscriber.csproj", "{472030D7-F6D7-41CC-B182-27E5E0FFD98E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financial.Framework.MessageBroker", "Financial.Framework.MessageBroker\Financial.Framework.MessageBroker.csproj", "{472030D7-F6D7-41CC-B182-27E5E0FFD98E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

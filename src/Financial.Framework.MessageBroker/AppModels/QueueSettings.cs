@@ -1,4 +1,4 @@
-﻿namespace Financial.Framework.Subscriber.AppModels
+﻿namespace Financial.Framework.MessageBroker.AppModels
 {
     public class QueueSettings
     {

@@ -5,10 +5,10 @@ namespace Financial.Framework.Domain.Handlers
 {
     public class EventHandler<T>
     {
-        protected readonly IMessageQueueService MessageQueueService;
+        protected readonly IPublisherService MessageQueueService;
         protected readonly ILogger<T> Logger;
 
-        public EventHandler(IMessageQueueService messageQueueService, ILogger<T> logger)
+        public EventHandler(IPublisherService messageQueueService, ILogger<T> logger)
         {
             MessageQueueService = messageQueueService;
             Logger = logger;
