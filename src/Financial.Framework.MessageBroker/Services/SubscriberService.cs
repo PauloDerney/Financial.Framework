@@ -2,12 +2,11 @@
 using Financial.Framework.Domain.Interfaces;
 using Financial.Framework.MessageBroker.AppModels;
 using MediatR;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Financial.Framework.MessageBroker.Services
 {
@@ -43,11 +42,15 @@ namespace Financial.Framework.MessageBroker.Services
         {
             try
             {
-                var type = typeof(TCommand);
                 var body = e.Body.ToArray();
-                var command = JsonSerializer.Deserialize(body, type);
+                var message = Encoding.UTF8.GetString(body);
+                var type = typeof(TCommand);
 
-                Console.WriteLine($"[Subscriber.ReceivedMessage] received message: {Encoding.UTF8.GetString(body)}");
+                Console.WriteLine($"type {type}");
+
+                var command = JsonConvert.DeserializeObject(message, type);
+
+                Console.WriteLine($"[Subscriber.ReceivedMessage] received message: {message}");
 
                 PublishCommand(command);
 
