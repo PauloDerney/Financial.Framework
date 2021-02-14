@@ -1,4 +1,5 @@
-﻿using Financial.Framework.Domain.Interfaces;
+﻿using Financial.Framework.Domain.Entities;
+using Financial.Framework.Domain.Interfaces;
 using Financial.Framework.MessageBroker.AppModels;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -7,7 +8,6 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Financial.Framework.MessageBroker.Services
 {
@@ -21,7 +21,7 @@ namespace Financial.Framework.MessageBroker.Services
             _mediator = mediator;
         }
 
-        public void Subscribe<TCommand>(string queue, string routingKey) where TCommand : class
+        public void Subscribe<TCommand, TResponse>(string queue, string routingKey) where TCommand : Command<TResponse>
         {
             using var connection = GetConnectionFactory().CreateConnection();
             _channel = connection.CreateModel();
@@ -31,7 +31,7 @@ namespace Financial.Framework.MessageBroker.Services
             _channel.QueueBind(queue, QueueSettings.Exchange, routingKey);
             var consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += ReceivedMessage<TCommand>;
+            consumer.Received += ReceivedMessage<TCommand, TResponse>;
 
             _channel.BasicConsume(queue, false, consumer);
 
@@ -39,7 +39,7 @@ namespace Financial.Framework.MessageBroker.Services
             Console.ReadLine();
         }
 
-        private void ReceivedMessage<TCommand>(object sender, BasicDeliverEventArgs e)
+        private void ReceivedMessage<TCommand, TResponse>(object sender, BasicDeliverEventArgs e) where TCommand : Command<TResponse>
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Financial.Framework.MessageBroker.Services
 
                 Console.WriteLine($"[Subscriber.ReceivedMessage] received message: {message}");
 
-                PublishCommand(command).GetAwaiter();
+                PublishCommand(command);
 
                 _channel.BasicAck(e.DeliveryTag, true);
             }
@@ -59,9 +59,9 @@ namespace Financial.Framework.MessageBroker.Services
             }
         }
 
-        private async Task PublishCommand<TCommand>(TCommand command)
+        private void PublishCommand<TCommand>(TCommand command)
         {
-            await _mediator.Send(command);
+            _mediator.Send(command);
         }
     }
 }
