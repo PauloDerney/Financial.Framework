@@ -15,7 +15,7 @@ namespace Financial.Framework.MessageBroker.DependencyInjection
             services.AddSingleton<ISubscriberService, SubscriberService>();
         }
 
-        public static void InjectProducer(this IServiceCollection services, IConfiguration configuration)
+        public static void InjectPublisher(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(provider => configuration.GetSection("QueueSettings").Get<QueueSettings>());
             services.AddScoped<IPublisherService, PublisherService>();
