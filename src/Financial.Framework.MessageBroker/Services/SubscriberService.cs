@@ -1,6 +1,7 @@
 ﻿using Financial.Framework.Domain.Entities;
 using Financial.Framework.Domain.Interfaces;
 using Financial.Framework.MessageBroker.AppModels;
+using Financial.Framework.MessageBroker.Entities;
 using MediatR;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -44,15 +45,12 @@ namespace Financial.Framework.MessageBroker.Services
             {
                 var body = e.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                var type = typeof(TCommand);
 
-                Console.WriteLine($"type {type}");
-
-                var command = JsonConvert.DeserializeObject(message, type);
+                var messageObj = JsonConvert.DeserializeObject<Message<TCommand>>(message);
 
                 Console.WriteLine($"[Subscriber.ReceivedMessage] received message: {message}");
 
-                PublishCommand(command);
+                PublishCommand(messageObj.Payload);
 
                 _channel.BasicAck(e.DeliveryTag, true);
             }
